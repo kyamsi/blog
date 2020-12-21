@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<head>
+    <title>用户注册页面</title>
+    <meta charset="utf-8">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        function exist() {
+            username = $("#u").val()
+            if (username == "") {
+                $('#existed').html("&nbsp")
+            } else {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "http://192.168.1.101:8000/exist",
+                    contentType: "application/x-www-form-urlencoded",
+                    data: $('#sign').serialize(),
+                    success: function(rsp) {
+                        if (rsp.err_msg != "") {
+                            $('#existed').css('color', 'crimson')
+                            $('#existed').html(rsp.err_msg)
+                        } else {
+                            $('#existed').css('color', 'darkgreen')
+                            $('#existed').html(rsp.data)
+                        }
+                    }
+                });
+            }
+        }
+
+        function confirm() {
+            password = $("#p1").val()
+            confirmpassword = $("#p2").val()
+            username = $("#u").val()
+            if (username == "") {
+                $('#existed').css('color', 'crimson')
+                $('#existed').html("用户名不能为空")
+            }
+            if (password != "") {
+                $('#confirmp1').html("&nbsp")
+            }
+            if (password == confirmpassword) {
+                $('#confirmp2').html("&nbsp")
+            }
+            if (password != "" && confirmpassword != "" && password == confirmpassword && username != "") {
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "http://192.168.1.101:8000/sign",
+                    contentType: "application/x-www-form-urlencoded",
+                    data: $('#sign').serialize(),
+                    success: function(rsp) {
+                        if (rsp.err_code != 0) {
+                            alert(rsp.err_msg)
+                        } else {
+                            alert(rsp.data)
+                        }
+                    }
+                })
+            } else {
+                if (password == "") {
+                    $('#confirmp1').css('color', 'crimson')
+                    $('#confirmp1').html("密码不能为空")
+                }
+                if ($('#p1').val() != $('#p2').val()) {
+                    $('#confirmp2').css('color', 'crimson')
+                    $('#confirmp2').html("两次密码不一致")
+                }
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+    <div style="position: absolute;left:50%;top:50%;transform: translate(-50%, -50%);width:15%;text-align:center;font-family:verdana;padding:200px;border-radius:100px;border:5px dashed #EE872A;">
+        <h1 style="color:#EE872A;position: absolute;transform:translate(40%, -200%);">欢迎新用户注册</h1>
+        <form id="sign" style="font-size: 20px;">
+            新用户名：<input id="u" name="username" type="text" placeholder="请设置新用户名" onkeyup="exist()" style="font-size: 20px">
+            <p id="existed" style="font-size: 10px;margin: 0px;"> &nbsp; </p>
+            密码：<input id="p1" name="password" type="password" style="font-size: 20px;margin-left: 40px">
+            <p id="confirmp1" style="color:crimson;font-size: 10px;margin: 0px;"> &nbsp; </p>
+            确认密码：<input id="p2" type="password" placeholder="请再次输入密码" style="font-size: 20px;">
+            <p id="confirmp2" style="font-size: 10px;margin: 0px;"> &nbsp; </p>
+            <br />
+            <input type="button" value="注册完成" style="font-size:15px" onclick="confirm()">
+            <a href="tryOne.html"><input type="button" value="去登录" style="font-size:15px;margin-left:50px;"></a>
+    </div>
+
+</body>
+
+</html>

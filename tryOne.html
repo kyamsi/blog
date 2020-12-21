@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<head>
+    <title>用户登录页面</title>
+    <meta charset="utf-8">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        function login() {
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "http://192.168.1.101:8000/login",
+                contentType: "application/x-www-form-urlencoded",
+                data: $('#login').serialize(),
+                success: function(rsp) {
+                    if (rsp.err_msg != "") {
+                        alert(rsp.err_msg)
+                    } else {
+                        alert(rsp.data)
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div style="position: absolute;left:50%;top:50%;transform: translate(-50%, -50%);width:15%;text-align:center;font-family:verdana;padding:200px;border-radius:100px;border:5px dashed #EE872A;">
+        <h1 style="color:#EE872A;position: absolute;transform:translate(50%, -200%);">用户登录窗口</h1>
+        <form id="login" style="font-size: 20px;">
+            用户名：<input name="username" type="text" placeholder="请输入用户名..." style="font-size: 20px;">
+            <br />
+            <br /> 密码：<input name="password" type="password" style="font-size: 20px;margin-left: 20px">
+            <br />
+            <a href="" style="font-size: 10px;margin-left: 25px;text-align: center;">忘记密码？</a>
+            <br />
+            <br />
+            <input type="button" value="登录" style="font-size:15px " onclick="login()">
+            <a href="signprc.html"><input type="button" value="注册" style="margin-left: 50px;font-size: 15px"></a>
+        </form>
+    </div>
+
+</body>
+
+</html>
